@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:06:37 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/08 18:41:44 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/09 14:05:30 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,22 @@ void	eating(t_philo *p)
 	char	*s1;
 	char	*s2;
 
-	s1 = "has taken a fork\n";
-	s2 = "is eating\n";
+	s1 = "has taken a fork";
+	s2 = "is eating";
 	sem_wait(p->info->fork);
-	printf ("%ld\t%d\t%s", get_time() - p->info->t_start, p->id, s1);
+	print (p, get_time() - p->info->t_start, s1);
+	if (p->info->n_philo == 1)
+	{
+		sem_post(p->info->fork);
+		ft_sleep(p->info->t_dead);
+		return ;
+	}
 	sem_wait(p->info->fork);
-	printf ("%ld\t%d\t%s", get_time() - p->info->t_start, p->id, s1);
+	print (p, get_time() - p->info->t_start, s1);
 	p->last_eat = get_time();
 	p->n_count++;
-	printf ("%ld\t%d\t%s", get_time() - p->info->t_start, p->id, s2);
-	ft_sleep(p->info->t_eat, p);
+	print (p, get_time() - p->info->t_start, s2);
+	ft_sleep(p->info->t_eat);
 	sem_post(p->info->fork);
 	sem_post(p->info->fork);
 }
@@ -35,15 +41,15 @@ void	sleeping(t_philo *p)
 {
 	char	*s;
 
-	s = "is sleeping\n";
-	printf ("%ld\t%d\t%s", get_time() - p->info->t_start, p->id, s);
-	ft_sleep(p->info->t_sleep, p);
+	s = "is sleeping";
+	print (p, get_time() - p->info->t_start, s);
+	ft_sleep(p->info->t_sleep);
 }
 
 void	thinking(t_philo *p)
 {
 	char	*s;
 
-	s = "is thinking\n";
-	printf ("%ld\t%d\tthinking\n", get_time() - p->info->t_start, p->id);
+	s = "is thinking";
+	print (p, get_time() - p->info->t_start, s);
 }

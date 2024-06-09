@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 22:34:05 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/08 14:32:47 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/09 10:47:10 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	init_philo(t_data *info, t_philo *p, int i)
 int	init_semaphores(t_data *info, t_philo **p)
 {
 	sem_unlink("fork");
-	sem_unlink("mail");
+	sem_unlink("death");
 	sem_unlink("print");
 	sem_unlink("full");
 	info->fork = sem_open("fork", O_CREAT, 0644, info->n_philo);
@@ -33,7 +33,7 @@ int	init_semaphores(t_data *info, t_philo **p)
 	info->full = sem_open("full", O_CREAT, 0644, 0);
 	if (info->fork == SEM_FAILED)
 		return (free(info), 0);
-	info->death = sem_open("mail", O_CREAT, 0644, 0);
+	info->death = sem_open("death", O_CREAT, 0644, 0);
 	if (info->death == SEM_FAILED)
 		return (free(info), 0);
 	info->print = sem_open("print", O_CREAT, 0644, 1);

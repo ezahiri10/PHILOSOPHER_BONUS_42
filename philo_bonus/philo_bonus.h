@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 13:02:17 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/08 15:28:39 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/09 14:05:42 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ typedef struct s_philo
 long	ft_atoi(const char *str);
 int		init_data(char **av, t_philo **p);
 int		create_process(t_philo *p);
-void	ft_sleep(long time, t_philo *p);
+void	ft_sleep(long time);
 long	get_time(void);
 void	eating(t_philo *p);
 void	sleeping(t_philo *p);
 void	thinking(t_philo *p);
+void	print(t_philo *p, size_t t, char *s);
 
 #endif

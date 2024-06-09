@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 21:27:42 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/08 17:34:47 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/09 10:10:06 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,9 @@ int	main(int ac, char **av)
 	t_philo	*p;
 
 	if (!parse(av, ac))
-	{
-		printf("Error1\n");
 		return (1);
-	}
 	if (!init_data(av, &p))
-	{
-		printf("Error2\n");
 		return (1);
-	}
 	create_process(p);
-	// printf("Errodajfiojsgjsjgpfjsbpjfpgpfsjr3\n");
-	exit(0);
+	return (0);
 }
