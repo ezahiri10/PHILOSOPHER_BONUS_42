@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 12:06:37 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/09 14:05:30 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/12 12:34:56 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,12 @@ void	eating(t_philo *p)
 	}
 	sem_wait(p->info->fork);
 	print (p, get_time() - p->info->t_start, s1);
-	p->last_eat = get_time();
+	sem_wait(p->mx_mails);
 	p->n_count++;
+	sem_post(p->mx_mails);
+	sem_wait(p->sm_last_eat);
+	p->last_eat = get_time();
+	sem_post(p->sm_last_eat);
 	print (p, get_time() - p->info->t_start, s2);
 	ft_sleep(p->info->t_eat);
 	sem_post(p->info->fork);

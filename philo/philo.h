@@ -1,63 +1,59 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/04 13:02:17 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/12 12:29:07 by ezahiri          ###   ########.fr       */
+/*   Created: 2024/06/09 15:43:11 by ezahiri           #+#    #+#             */
+/*   Updated: 2024/06/12 00:53:49 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_BONUS_H
-# define PHILO_BONUS_H
+#ifndef PHILO_H
+# define PHILO_H
 
-# include <pthread.h>
 # include <stdio.h>
-# include <fcntl.h>
 # include <stdlib.h>
-# include <unistd.h>
-# include <signal.h>
-# include <semaphore.h>
+# include <fcntl.h>
+# include <pthread.h>
 # include <sys/time.h>
+# include <unistd.h>
 
 typedef struct s_data
 {
-	int				n_philo;
+	long			n_philo;
 	long			t_eat;
-	long			t_dead;
 	long			t_sleep;
-	long			n_mails;
-	sem_t			*fork;
-	sem_t			*death;
-	sem_t			*full;
-	sem_t			*print;
+	long			t_dead;
+	int				n_mails;
 	long			t_start;
-	pid_t			*pid;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	mx_data;
+	long			flag;
 }				t_data;
 
 typedef struct s_philo
 {
-	int				id;
 	t_data			*info;
-	sem_t			*mx_mails;
-	sem_t			*sm_last_eat;
-	long long		last_eat;
-	long			n_count;
+	pthread_t		tid;
+	long			last_eat;
+	pthread_mutex_t	mx_philo;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*left_fork;
+	int				n_count;
+	int				id;
 }				t_philo;
 
+int		init_data(t_philo **p, char **av);
 long	ft_atoi(const char *str);
-int		init_data(char **av, t_philo **p);
-int		create_process(t_philo *p);
-void	ft_sleep(long time);
 long	get_time(void);
+void	ft_sleep(t_philo *p, size_t t);
+int		edo_tensei(t_philo *p);
 void	eating(t_philo *p);
 void	sleeping(t_philo *p);
 void	thinking(t_philo *p);
-void	print(t_philo *p, size_t t, char *s);
-void	ft_putnbr_fd(long n, int fd);
-void	ft_putstr_fd(char *s, int fd);
-void	ft_putchar_fd(char c, int fd);
+void	ft_mutex(long	*dst, long *src, pthread_mutex_t *m);
+long	ft_read(void *r, pthread_mutex_t *m);
 
 #endif

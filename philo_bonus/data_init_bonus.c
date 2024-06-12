@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   data_init.c                                        :+:      :+:    :+:   */
+/*   data_init_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 22:34:05 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/09 10:47:10 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/12 12:37:41 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 
 int	init_philo(t_data *info, t_philo *p, int i)
 {
+	sem_unlink("mail");
+	sem_unlink("last_eat");
+	p->mx_mails = sem_open("mail", O_CREAT, 0644, 1);
+	if (p->mx_mails == SEM_FAILED)
+		return (free(info), 1);
+	p->sm_last_eat = sem_open("last_eat", O_CREAT, 0644, 1);
+	if (p->sm_last_eat == SEM_FAILED)
+		return (free(info), 1);
 	p->id = i + 1;
 	p->info = info;
 	p->last_eat = 0;

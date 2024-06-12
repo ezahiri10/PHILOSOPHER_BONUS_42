@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_time_bonus.c                                   :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:56:11 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/10 23:35:58 by ezahiri          ###   ########.fr       */
+/*   Created: 2023/10/30 23:51:47 by ezahiri           #+#    #+#             */
+/*   Updated: 2024/06/09 23:40:00 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "philo.h"
 
-long	get_time(void)
+long	ft_atoi(const char *str)
 {
-	struct timeval	time;
+	long	r;
+	int		s;
 
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-}
-
-void	ft_sleep(long time)
-{
-	long	start;
-
-	start = get_time();
-	while (1)
+	r = 0;
+	s = 1;
+	if (!str)
+		return (-1);
+	while (*str && *str >= '0' && *str <= '9')
 	{
-		if (get_time() - start >= time)
-			return ;
-		usleep(500);
+		r = r * 10 + (*str - 48);
+		if ((r > 2147483647 && s == 1) || (r > 2147483648 && s == -1))
+			return (-2);
+		str++;
 	}
+	return (r * s);
 }

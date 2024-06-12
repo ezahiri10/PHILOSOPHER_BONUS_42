@@ -1,6 +1,6 @@
 CC = cc
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread -g
 
 SRC =	create_process_bonus.c \
 		main_bonus.c \
@@ -20,7 +20,7 @@ RM = rm -f
 	$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ)  -o $(NAME)
+	$(CC)  $(FLAGS)  $(OBJ)  -o $(NAME)
 
 clean : 
 	$(RM) $(OBJ)

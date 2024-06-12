@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_process.c                                   :+:      :+:    :+:   */
+/*   create_process_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:49:25 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/09 13:29:17 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/12 12:36:57 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ int	kill_all(pid_t *pid, t_philo *p, int n)
 	sem_close(p->info->fork);
 	sem_close(p->info->death);
 	sem_close(p->info->print);
+	sem_close(p->info->print);
+	sem_close(p->mx_mails);
+	sem_unlink("mail");
 	sem_unlink("death");
 	sem_unlink("print");
 	sem_unlink("death");
@@ -51,15 +54,25 @@ void	*check_mails(void *arg)
 void	*check_death(void *arg)
 {
 	t_philo	*p;
+	long	t;
 
 	p = (t_philo *)arg;
 	while (1)
 	{
-		if (get_time() - p->last_eat >= p->info->t_dead)
+		sem_wait(p->mx_mails);
+		t = p->last_eat;
+		sem_post(p->mx_mails);
+		if (get_time() - t >= p->info->t_dead)
 		{
+			sem_wait(p->info->print);
+			ft_putnbr_fd(get_time() - p->info->t_start, 1);
+			ft_putchar_fd('\t', 1);
+			ft_putnbr_fd(p->id, 1);
+			ft_putchar_fd('\t', 1);
+			ft_putstr_fd("dead", 1);
+			ft_putchar_fd('\n', 1);
 			sem_post(p->info->death);
-			print (p, get_time() - p->info->t_start, "died");
-			exit(0);
+			break ;
 		}
 	}
 	return (NULL);
@@ -68,14 +81,21 @@ void	*check_death(void *arg)
 int	philo_life(t_philo *p)
 {
 	pthread_t	tid;
+	int			n;
 
 	p->last_eat = get_time();
 	if (0 != pthread_create(&tid, NULL, &check_death, p))
 		return (0);
+	pthread_detach(tid);
+	if (p->id % 2 == 0)
+		ft_sleep(p->info->t_eat);
 	while (1)
 	{
 		eating(p);
-		if (p->n_count == p->info->n_mails)
+		sem_wait(p->sm_last_eat);
+		n = p->n_count;
+		sem_post(p->sm_last_eat);
+		if (n == p->info->n_mails)
 		{
 			sem_post(p->info->full);
 			exit(0);
@@ -109,6 +129,7 @@ int	create_process(t_philo *p)
 	}
 	if (0 != pthread_create(&mail, NULL, &check_mails, p))
 		return (kill_all(pid, p, p->info->n_philo));
+	pthread_detach(mail);
 	sem_wait(p->info->death);
 	kill_all(p->info->pid, p, p->info->n_philo);
 	return (1);
