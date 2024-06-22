@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:42:19 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/22 09:20:23 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/22 15:24:06 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,33 +37,29 @@ int	parse(char **av, int ac)
 	return (0);
 }
 
-int	ft_free(t_philo *p, t_data *info, int n)
-{
-	int	i;
-
-	i = -1;
-	pthread_mutex_destroy(&p->info->mx_data);
-	while (++i < n)
-	{
-		pthread_mutex_destroy(p->info->forks + i);
-		pthread_mutex_destroy(&(p + i)->mx_philo);
-	}
-	free(info->forks);
-	free(p->info);
-	free(p);
-	return (1);
-}
-
 void	ft_clean(t_philo *p, int n)
 {
 	int		i;
-	long	flag;
 
-	flag = 1;
 	i = -1;
-	ft_write(&p->info->flag, &flag, &p->info->mx_data);
+	ft_write(&p->info->flag, 1, &p->info->mx_data);
 	while (++i < n)
 		pthread_join((p + i)->tid, NULL);
+}
+
+int	check_time(t_philo *p)
+{
+	int	i;
+	int	mail;
+
+	i = -1;
+	mail = p->info->n_mails;
+	while (++i < p->info->n_philo)
+	{
+		if ((int)ft_read(&(p + i)->n_count, &(p + i)->mx_philo) != mail)
+			return (0);
+	}
+	return (1);
 }
 
 int	monitor(t_philo *p)
@@ -77,7 +73,7 @@ int	monitor(t_philo *p)
 	d = p->info->t_dead;
 	while (i < p->info->n_philo)
 	{
-		if (ft_read(&(p + i)->n_count, &(p + i)->mx_philo) == p->info->n_mails)
+		if (check_time (p) == 1)
 		{
 			ft_clean(p, p->info->n_philo);
 			return (0);

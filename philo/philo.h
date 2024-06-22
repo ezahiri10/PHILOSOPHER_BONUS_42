@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:43:11 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/22 08:51:38 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/22 17:48:39 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int		edo_tensei(t_philo *p);
 void	eating(t_philo *p);
 void	sleeping(t_philo *p);
 void	thinking(t_philo *p);
-void	ft_write(long	*dst, long *src, pthread_mutex_t *m);
+void	ft_write(long	*dst, long src, pthread_mutex_t *m);
 long	ft_read(void *r, pthread_mutex_t *m);
 int		ft_free(t_philo *p, t_data *info, int n);
 void	ft_clean(t_philo *p, int n);

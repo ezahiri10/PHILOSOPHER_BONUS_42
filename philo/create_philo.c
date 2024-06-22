@@ -6,13 +6,11 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 00:30:47 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/22 08:51:22 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/22 17:47:33 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-// Edo Tensei No Jurtsu
 
 void	*philo_life(void *arg)
 {
@@ -29,7 +27,7 @@ void	*philo_life(void *arg)
 		{
 			eating(p);
 			if (p->n_count == p->info->n_mails)
-				return (NULL);
+				break ;
 			sleeping(p);
 			thinking(p);
 		}
@@ -54,7 +52,7 @@ int	edo_tensei(t_philo *p)
 		}
 	}
 	t_start = get_time();
-	ft_write(&p->info->t_start, &t_start, &p->info->mx_data);
+	ft_write(&p->info->t_start, t_start, &p->info->mx_data);
 	ft_sleep(p, p->info->t_dead);
 	return (0);
 }
