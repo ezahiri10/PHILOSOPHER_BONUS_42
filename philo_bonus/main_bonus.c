@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 21:27:42 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/10 21:54:31 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/21 23:29:13 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,20 @@ int	parse(char **av, int ac)
 				if (av[i][j] >= '0' && av[i][j] <= '9')
 					j -= -1;
 				else
-					return (0);
+					return (printf ("invalid argument\n"));
 			}
 		}
 	}
 	else
-		return (0);
-	return (1);
+		return (printf ("give 4 or 5 arguments"));
+	return (0);
 }
 
 int	main(int ac, char **av)
 {
 	t_philo	*p;
 
-	if (!parse(av, ac))
-		return (1);
-	if (!init_data(av, &p))
+	if (parse(av, ac) || init_data(av, &p))
 		return (1);
 	create_process(p);
 	return (0);

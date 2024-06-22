@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 10:29:05 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/12 00:05:20 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/22 09:10:06 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,12 @@ void	eating(t_philo *p)
 	printf ("%lu\t%d\t%s\n", get_time() - p->info->t_start, p->id, s2);
 	cur_t = get_time ();
 	if (p->info->t_eat > 0)
+	{
+		pthread_mutex_lock(&p->mx_philo);
 		p->n_count++;
-	ft_mutex(&p->last_eat, &cur_t, &p->mx_philo);
+		pthread_mutex_unlock(&p->mx_philo);
+	}
+	ft_write(&p->last_eat, &cur_t, &p->mx_philo);
 	ft_sleep(p, p->info->t_eat);
 	pthread_mutex_unlock(p->right_fork);
 	pthread_mutex_unlock(p->left_fork);

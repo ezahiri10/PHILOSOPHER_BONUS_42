@@ -6,20 +6,20 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:49:25 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/12 12:36:57 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/13 15:47:04 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	kill_all(pid_t *pid, t_philo *p, int n)
+int	kill_all(t_philo *p, int n)
 {
 	int	i;
 
 	i = 0;
 	while (i < n)
 	{
-		kill(pid[i], SIGKILL);
+		kill((p + i)->pid, SIGKILL);
 		i -= -1;
 	}
 	sem_close(p->info->fork);
@@ -110,27 +110,22 @@ int	create_process(t_philo *p)
 {
 	int			i;
 	pthread_t	mail;
-	pid_t		*pid;
 
-	p->info->pid = (pid_t *)malloc(sizeof(pid_t) * p->info->n_philo);
-	if (!p->info->pid)
-		return (kill_all(NULL, p, 0));
-	pid = p->info->pid;
 	i = 0;
 	p->info->t_start = get_time();
 	while (i < p->info->n_philo)
 	{
-		pid[i] = fork();
-		if (pid[i] < 0)
-			kill_all(pid, p, i);
-		else if (pid[i] == 0)
+		(p + i)->pid = fork();
+		if ((p + i)->pid < 0)
+			kill_all(p, i);
+		else if ((p + i)->pid == 0)
 			philo_life(p + i);
 		i++;
 	}
 	if (0 != pthread_create(&mail, NULL, &check_mails, p))
-		return (kill_all(pid, p, p->info->n_philo));
+		return (kill_all(p, p->info->n_philo));
 	pthread_detach(mail);
 	sem_wait(p->info->death);
-	kill_all(p->info->pid, p, p->info->n_philo);
+	kill_all(p, p->info->n_philo);
 	return (1);
 }

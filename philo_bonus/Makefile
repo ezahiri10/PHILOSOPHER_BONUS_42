@@ -1,6 +1,6 @@
 CC = cc
 
-FLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread -g
+FLAGS = -Wall -Wextra -Werror #-pthread -fsanitize=thread -g
 
 SRC =	create_process_bonus.c \
 		main_bonus.c \

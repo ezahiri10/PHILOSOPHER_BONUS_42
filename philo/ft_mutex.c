@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_time.c                                         :+:      :+:    :+:   */
+/*   ft_mutex.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/10 00:34:38 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/22 08:50:53 by ezahiri          ###   ########.fr       */
+/*   Created: 2024/06/22 08:49:34 by ezahiri           #+#    #+#             */
+/*   Updated: 2024/06/22 08:54:08 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	get_time(void)
+void	ft_write(long	*dst, long *src, pthread_mutex_t *m)
 {
-	struct timeval	t;
-
-	if (-1 == gettimeofday(&t, NULL))
-		return (0);
-	else
-		return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+	pthread_mutex_lock(m);
+	*dst = *src;
+	pthread_mutex_unlock(m);
 }
 
-void	ft_sleep(t_philo *p, size_t t)
+long	ft_read(void *r, pthread_mutex_t *m)
 {
-	size_t	s;
+	long	red;
 
-	s = get_time();
-	while (!ft_read(&p->info->flag, &p->info->mx_data))
-	{
-		if (get_time() - s >= t)
-			return ;
-		usleep(100);
-	}
+	pthread_mutex_lock(m);
+	red = *((long *)r);
+	pthread_mutex_unlock(m);
+	return (red);
 }

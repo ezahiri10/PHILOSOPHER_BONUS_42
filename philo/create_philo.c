@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 00:30:47 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/12 00:30:14 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/22 08:51:22 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,14 @@ int	edo_tensei(t_philo *p)
 	while (++i < p->info->n_philo)
 	{
 		if (pthread_create(&(p + i)->tid, NULL, &philo_life, p + i))
-			return (printf ("pthread_create failed"));
+		{
+			ft_clean(p, i);
+			ft_free(p, p->info, p->info->n_philo);
+			return (write (2, "pthread_create failed", 22));
+		}
 	}
 	t_start = get_time();
-	ft_mutex(&p->info->t_start, &t_start, &p->info->mx_data);
+	ft_write(&p->info->t_start, &t_start, &p->info->mx_data);
 	ft_sleep(p, p->info->t_dead);
 	return (0);
 }

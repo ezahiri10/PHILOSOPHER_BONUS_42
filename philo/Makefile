@@ -1,6 +1,6 @@
 CC = cc 
 
-FLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
+FLAGS = -Wall -Wextra -Werror #-g -fsanitize=thread
 
 RM = rm -f 
 
@@ -10,6 +10,7 @@ SRC =	create_philo.c \
 		init_data.c \
 		main.c \
 		routine.c \
+		ft_mutex.c \
 
 OBJ = $(SRC:.c=.o)
 
