@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 13:02:17 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/13 15:40:50 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/23 13:33:33 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <semaphore.h>
 # include <sys/time.h>
+# include <stdatomic.h>
 
 typedef struct s_data
 {
@@ -44,7 +45,7 @@ typedef struct s_philo
 	t_data			*info;
 	sem_t			*mx_mails;
 	sem_t			*sm_last_eat;
-	long long		last_eat;
+	long			last_eat;
 	long			n_count;
 }				t_philo;
 
