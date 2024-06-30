@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:49:25 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/13 15:47:04 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/30 17:23:53 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	kill_all(t_philo *p, int n)
 		kill((p + i)->pid, SIGKILL);
 		i -= -1;
 	}
+	// if (p->info->n_mails > 0)
+	// 	sem_close(p->info->full);
 	sem_close(p->info->fork);
 	sem_close(p->info->death);
 	sem_close(p->info->print);
@@ -31,12 +33,12 @@ int	kill_all(t_philo *p, int n)
 	sem_unlink("death");
 	sem_unlink("print");
 	sem_unlink("death");
+	sem_unlink("full");
 	free(p->info->pid);
 	free(p->info);
 	free(p);
 	return (0);
 }
-	// sem_close(p->info->full);
 
 void	*check_mails(void *arg)
 {
@@ -122,9 +124,12 @@ int	create_process(t_philo *p)
 			philo_life(p + i);
 		i++;
 	}
-	if (0 != pthread_create(&mail, NULL, &check_mails, p))
-		return (kill_all(p, p->info->n_philo));
-	pthread_detach(mail);
+	if (p->info->n_mails > 0)
+	{
+		if (0 != pthread_create(&mail, NULL, &check_mails, p))
+			return (kill_all(p, p->info->n_philo));
+		pthread_detach(mail);
+	}
 	sem_wait(p->info->death);
 	kill_all(p, p->info->n_philo);
 	return (1);

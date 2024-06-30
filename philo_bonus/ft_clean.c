@@ -1,34 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_time_bonus.c                                   :+:      :+:    :+:   */
+/*   ft_clean.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 11:56:11 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/30 17:23:07 by ezahiri          ###   ########.fr       */
+/*   Created: 2024/06/30 15:54:28 by ezahiri           #+#    #+#             */
+/*   Updated: 2024/06/30 16:40:44 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-long	get_time(void)
+void	sem_clean(sem_t *s, char *name)
 {
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+	sem_close(s);
+	sem_unlink(name);
 }
 
-void	ft_sleep(long time)
+void	ft_handler(t_data *info, int n)
 {
-	long	start;
-
-	start = get_time();
-	while (1)
+	if (n == 1)
+		sem_clean(info->fork, "fork");
+	else if (n == 2)
 	{
-		if (get_time() - start >= time)
-			return ;
-		usleep(500);
+		sem_clean(info->full, "full");
+		ft_handler(info, n - 1);
 	}
+	else if (n == 3)
+	{
+		sem_clean(info->death, "death");
+		ft_handler(info, n - 1);
+	}
+	else if (n == 4)
+	{
+		sem_clean(info->print, "print");
+		ft_handler(info, n - 1);
+	}
+	write (2, "Sem_open failed\n", 17);
 }

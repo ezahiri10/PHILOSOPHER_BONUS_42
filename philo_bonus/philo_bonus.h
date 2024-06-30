@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 13:02:17 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/23 13:33:33 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/06/30 16:52:45 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,7 @@ void	print(t_philo *p, size_t t, char *s);
 void	ft_putnbr_fd(long n, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
+void	ft_handler(t_data *info, int n);
+void	sem_clean(sem_t *s, char *name);
 
 #endif
