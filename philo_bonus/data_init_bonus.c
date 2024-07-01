@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 22:34:05 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/30 16:52:30 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/07/01 10:50:57 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int	init_philo(t_data *info, t_philo *p, int i)
 int	init_semaphores(t_data *info, t_philo **p)
 {
 	sem_unlink("fork");
+	sem_unlink("full");
 	sem_unlink("death");
 	sem_unlink("print");
-	sem_unlink("full");
 	info->fork = sem_open("fork", O_CREAT, 0644, info->n_philo);
 	if (info->fork == SEM_FAILED)
 		return (ft_handler(info, 1), 1);
@@ -64,8 +64,7 @@ int	get_info(t_data *info, char **av)
 	if (info->n_philo > 200 || info->n_philo <= 0
 		|| info->t_dead < 60
 		|| info->t_eat < 60
-		|| info->t_sleep < 60
-		|| info->n_mails == 0)
+		|| info->t_sleep < 60)
 		return (printf ("invalid argument\n"));
 	return (0);
 }

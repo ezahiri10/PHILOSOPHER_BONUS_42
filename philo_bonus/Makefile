@@ -8,7 +8,6 @@ SRC =	create_process_bonus.c \
 		ft_atoi_bonus.c \
 		get_time_bonus.c \
 		routine_bonus.c \
-		print_bonus.c \
 		ft_clean.c \
 
 OBJ = $(SRC:.c=.o)
