@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:42:19 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/22 15:24:06 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/07/02 09:13:52 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@ int	parse(char **av, int ac)
 		while (av[++i])
 		{
 			j = 0;
-			while (av[i][j])
+			while (av[i][j] || av[i][0] == '\0')
 			{
-				if (av[i][j] >= '0' && av[i][j] <= '9')
+				if (av[i][j] >= '0' && av[i][j] <= '9' && av[i][0] != '\0')
 					j++;
 				else
-					return (printf("invalid input\n"));
+					return (write (2, "invalid input\n", 14));
 			}
 		}
 	}
 	else
-		return (printf ("donner 4 ou 5 argmuent"));
+		return (write (2, "give 4 or 5 argmuents\n", 23));
 	return (0);
 }
 
@@ -47,7 +47,7 @@ void	ft_clean(t_philo *p, int n)
 		pthread_join((p + i)->tid, NULL);
 }
 
-int	check_time(t_philo *p)
+int	check_mail(t_philo *p)
 {
 	int	i;
 	int	mail;
@@ -73,7 +73,7 @@ int	monitor(t_philo *p)
 	d = p->info->t_dead;
 	while (i < p->info->n_philo)
 	{
-		if (check_time (p) == 1)
+		if (check_mail (p) == 1)
 		{
 			ft_clean(p, p->info->n_philo);
 			return (0);

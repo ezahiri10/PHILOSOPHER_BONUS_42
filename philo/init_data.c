@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 23:02:21 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/22 07:30:40 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/07/02 08:30:30 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@ int	get_info(t_data *info, char **av)
 	info->t_eat = ft_atoi (av[3]);
 	info->t_sleep = ft_atoi(av[4]);
 	info->n_mails = ft_atoi(av[5]);
-	info->forks = malloc (sizeof(pthread_mutex_t) * info->n_philo);
-	if (!info->forks)
-		return (write (2, "malloc failed\n", 15));
 	if (info->n_philo <= 0 || \
 			info->n_philo > 200 || \
 			info->t_dead < 60 || \
 			info->t_eat < 60 || \
 			info->t_sleep < 60 || \
 			info->n_mails == -2)
-		return (free(info->forks), printf ("invalid argument\n"));
+		return (write (2, "invalid argument\n", 17));
 	if (pthread_mutex_init(&info->mx_data, NULL))
-		return (free(info->forks), printf("pthread_mutex_init failed\n"));
+		return (write (2, "pthread_mutex_init failed\n", 27));
+	info->forks = malloc (sizeof(pthread_mutex_t) * info->n_philo);
+	if (!info->forks)
+		return (write (2, "malloc failed\n", 15));
 	return (0);
 }
 
@@ -69,7 +69,7 @@ int	init_data(t_philo **p, char **av)
 			free(info->forks), free(info), \
 			write (2, "malloc failed\n", 15));
 	while (++i < info->n_philo)
-		if (init_philo(&(*p)[i], info, i))
+		if (init_philo((*p + i), info, i))
 			return (ft_free(*p, info, i));
 	return (0);
 }
