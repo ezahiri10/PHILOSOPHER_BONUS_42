@@ -1,6 +1,6 @@
 CC = cc 
 
-FLAGS = -Wall -Wextra -Werror #-g -fsanitize=thread
+FLAGS = -Wall -Wextra -Werror
 
 RM = rm -f 
 

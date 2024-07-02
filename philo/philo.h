@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 15:43:11 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/06/22 17:48:39 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/07/02 09:23:24 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# include <fcntl.h>
 # include <pthread.h>
 # include <sys/time.h>
 # include <unistd.h>
