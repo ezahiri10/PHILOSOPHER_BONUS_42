@@ -6,7 +6,7 @@
 /*   By: ezahiri <ezahiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:49:25 by ezahiri           #+#    #+#             */
-/*   Updated: 2024/07/01 15:52:12 by ezahiri          ###   ########.fr       */
+/*   Updated: 2024/07/02 10:11:31 by ezahiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ int	kill_all(t_philo *p, int n)
 	sem_close(p->info->fork);
 	sem_close(p->info->death);
 	sem_close(p->info->print);
-	sem_close(p->mx_mails);
 	sem_close(p->sm_last_eat);
-	sem_unlink("mail");
 	sem_unlink("death");
 	sem_unlink("print");
 	sem_unlink("death");
@@ -105,7 +103,7 @@ int	create_process(t_philo *p)
 	pthread_t	mail;
 
 	i = 0;
-	mail = NULL;
+	mail = 0;
 	if (p->info->n_mails == 0)
 		return (kill_all(p, 0));
 	p->info->t_start = get_time();
@@ -121,7 +119,8 @@ int	create_process(t_philo *p)
 	if (p->info->n_mails > 0)
 		if (0 != pthread_create(&mail, NULL, &check_mails, p))
 			return (kill_all(p, p->info->n_philo));
-	pthread_detach(mail);
+	if (p->info->n_mails > 0)
+		pthread_detach(mail);
 	sem_wait(p->info->death);
 	kill_all(p, p->info->n_philo);
 	return (1);
