@@ -1,0 +1,11 @@
+# object files
+*.o
+# executables
+*.exe
+philo
+# libraries
+*.a
+*.so
+# .vscode files
+.DS_Store
+.vscode
